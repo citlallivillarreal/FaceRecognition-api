@@ -1,5 +1,5 @@
 import express from 'express';
-
+import bcrypt from 'bcrypt';
 
 const app = express();
 
@@ -41,6 +41,12 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
     const { email, password, name } = req.body;
+    const saltRounds = 10;
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hash) {
+            console.log(hash);
+        });
+    });
     database.users.push({
         id: '125',
         name: name,
@@ -81,18 +87,13 @@ app.put('/image', (req, res) => {
     }
 
 })
+// bcrypt.genSalt(saltRounds, function(err, salt) {
+//     bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+//         // Store hash in your password DB.
+//     });
+// });
+
 app.listen(3000, () => {
     console.log('app is running on port 3000');
 })
 
-/* API Design
-/ --> res = this is working 
-/signin --> POST = success/fail (need to do a post
-                 even though we are not creating 
-                 new user its bc we want to send password in body)
-/register --> POST = user 
-/profile/:userId --> GET = user 
-/image --> PUT = user 
-
-
-*/
