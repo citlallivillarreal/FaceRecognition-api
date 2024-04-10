@@ -1,5 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import cors from 'cors';
 
 const app = express();
 
@@ -24,7 +25,7 @@ const database = {
         }
     ]
 }
-
+app.use(cors());
 app.get('/', (req, res) => {
     res.send(database.users);
 })
